@@ -1,0 +1,37 @@
+
+# Dependency directories
+node_modules/
+
+# TypeScript output directory
+dist/
+
+
+# IDE/Editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Compiled TypeScript definitions
+*.tsbuildinfo
+
+# Environment variables file
+.env
+.env.prod
+
+# Logs
+logs
+*.log
+
+# User-specific files
+npm-debug.log
+yarn-error.log
+
+# Mac OS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Ignore package-lock.json
+package-lock.json
