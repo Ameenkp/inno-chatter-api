@@ -1,0 +1,49 @@
+{
+  "env": {
+    "es2022": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb-base",
+    "plugin:prettier/recommended",
+    "plugin:eslint-comments/recommended",
+    "plugin:jest/recommended",
+    "plugin:promise/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "eslint-comments",
+    "jest",
+    "promise",
+    "import",
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "import/extensions": "off",
+    "import/no-unresolved": "off",
+    "no-console": "warn",
+    "no-underscore-dangle": "off",
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "error",
+    "class-methods-use-this": "off",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }],
+    "@typescript-eslint/no-unused-vars":["error", { "argsIgnorePattern": "req|res|next|val" }],
+    "no-param-reassign": "off",
+    "no-use-before-define": ["error", { "functions": false, "classes": true, "variables": true }],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      { "functions": false, "classes": true, "variables": true, "typedefs": true }
+    ],
+    "import/no-extraneous-dependencies": "off"
+  }
+}
+

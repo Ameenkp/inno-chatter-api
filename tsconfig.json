@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "types": ["node" , "express"],
+    "target": "ES2022",
+    "module": "commonjs",
+    "lib": ["ESNext", "DOM"],
+    "outDir": "./dist", // Output directory for compiled JavaScript files
+    "rootDir": "./", // Source directory for TypeScript files
+    "removeComments": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["server.ts", "src/**/*.ts"],
+  "exclude": ["node_modules" , "dist" , "coverage"]
+}
+
