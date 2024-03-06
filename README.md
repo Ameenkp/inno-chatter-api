@@ -9,13 +9,13 @@ This is a sample User management , chat application
 Clone the repository and run the following command:
 
 ```bash
-git clone https://github.com/Ameenkp/natours-app.git
+git clone https://github.com/Ameenkp/inno-chatter-api.git
 ```
 
 ### Technologies Used:
 
 #### Cloud Services:
-[<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS" width="40" height="40">](https://aws.amazon.com)
+[<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/azure/azure-original-wordmark.svg" alt="Azure" width="40" height="40">](https://portal.azure.com)
 
 #### Development Tools:
 [<img src="https://www.vectorlogo.zone/logos/gnu_bash/gnu_bash-icon.svg" alt="Bash" width="40" height="40">](https://www.gnu.org/software/bash/)
@@ -26,10 +26,8 @@ git clone https://github.com/Ameenkp/natours-app.git
 
 #### Web Technologies:
 [<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="HTML5" width="40" height="40">](https://www.w3.org/html/)
-[<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-plain-wordmark.svg" alt="Bootstrap" width="40" height="40">](https://getbootstrap.com/)
-[<img src="https://cdn.worldvectorlogo.com/logos/pug.svg" alt="Pug" width="40" height="40">](https://pugjs.org/)
+[<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="TypeScript" width="40" height="40">](https://www.typescriptlang.org/)
 [<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="JavaScript" width="40" height="40">](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[<img src="https://www.vectorlogo.zone/logos/jenkins/jenkins-icon.svg" alt="Jenkins" width="40" height="40">](https://www.jenkins.io/)
 [<img src="https://www.vectorlogo.zone/logos/jestjsio/jestjsio-icon.svg" alt="Jest" width="40" height="40">](https://jestjs.io/)
 
 #### Operating System and Servers:
@@ -43,7 +41,4 @@ git clone https://github.com/Ameenkp/natours-app.git
 
 #### Other Tools and Libraries:
 [<img src="https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" alt="Postman" width="40" height="40">](https://postman.com/)
-[<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="React" width="40" height="40">](https://reactjs.org/)
-[<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" alt="Redux" width="40" height="40">](https://redux.js.org/)
-[<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="TypeScript" width="40" height="40">](https://www.typescriptlang.org/)
 [<img src="https://raw.githubusercontent.com/devicons/devicon/d00d0969292a6569d45b06d3f350f463a0107b0d/icons/webpack/webpack-original-wordmark.svg" alt="Webpack" width="40" height="40">](https://webpack.js.org/)
