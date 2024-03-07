@@ -4,7 +4,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcrypt';
 
 import { UserModel } from '../models/userModel';
-import {NextFunction} from "express";
+import { NextFunction } from 'express';
 
 export class PassportConfig {
   public static configure(): void {

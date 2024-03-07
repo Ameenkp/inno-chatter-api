@@ -1,9 +1,9 @@
 // src/models/UserModel.ts
 import { Document, Schema, model } from 'mongoose';
 import slugify from 'slugify';
-import validator from "validator";
+import validator from 'validator';
 
-interface IUser extends Document {
+export interface IUser extends Document {
   id: string;
   name: string;
   email: string;
@@ -17,12 +17,17 @@ interface IUser extends Document {
 
 const userSchema = new Schema<IUser>({
   email: {
-      type: String,
-      required: [true, 'A tour must have a email'],
-      unique: true,
-      trim: true,
-      validate: [validator.isEmail, 'A tour must have a valid email'],},
-  password: { type: String, required: [true, 'A user must have a password'] },
+    type: String,
+    required: [true, 'A tour must have a email'],
+    unique: true,
+    trim: true,
+    validate: [validator.isEmail, 'A tour must have a valid email'],
+  },
+  password: {
+    type: String,
+    required: [true, 'A user must have a password'],
+    validate: [validator.isStrongPassword, 'A user must have a strong password'],
+  },
   name: {
     type: String,
     required: [true, 'A user must have a name'],

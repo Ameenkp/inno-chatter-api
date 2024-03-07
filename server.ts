@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import { App } from './src/app';
-import {MongooseConfig} from "./src/config/mongoose.mw";
-import {Constants} from "./src/config/constants";
+import { MongooseConfig } from './src/config/mongoose.mw';
+import { Constants } from './src/config/constants';
 
 class Server {
   private app: App;

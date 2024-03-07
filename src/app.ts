@@ -3,7 +3,7 @@ import morgan from 'morgan';
 import { UserRoutes } from './routes/userRoutes';
 import session from 'express-session';
 import passport from 'passport';
-import {PassportConfig} from "./config/passport.mw";
+import { PassportConfig } from './config/passport.mw';
 
 export class App {
   private app: Application;
