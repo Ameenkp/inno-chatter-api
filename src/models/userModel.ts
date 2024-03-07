@@ -13,7 +13,7 @@ export interface IUser extends Document {
   password: string;
   role: string;
   active: boolean;
-  photo: string;
+  userImage: string;
   // Add other fields as needed for the user profile
 }
 
@@ -39,7 +39,7 @@ const userSchema = new Schema<IUser>({
   },
   role: { type: String, required: false },
   active: { type: Boolean, default: false },
-  photo: { type: String, default: '' },
+  userImage: { type: String, default: '' },
 });
 
 /// DOCUMENT MIDDLEWARE ///////////////////////
@@ -55,7 +55,6 @@ export const UserModel = model<IUser>('User', userSchema);
 export async function createUser(data: Partial<IUser>): Promise<IUser> {
   try {
     data.password = await bcrypt.hash(<string>data.password, 10);
-    await UserModel.create(data);
     return await UserModel.create(data);
   } catch (error) {
     throw new Error(`Error creating tour: ${(error as Error).message}`);
