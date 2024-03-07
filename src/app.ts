@@ -4,6 +4,7 @@ import { UserRoutes } from './routes/userRoutes';
 import session from 'express-session';
 import passport from 'passport';
 import { PassportConfig } from './config/passport.mw';
+import { ProfileRoutes } from './routes/profileRoutes';
 
 export class App {
   private app: Application;
@@ -33,6 +34,7 @@ export class App {
 
   private routeMountings(): void {
     this.app.use('/api/v1/user', new UserRoutes().getUserRouter());
+    this.app.use('/api/v1/profile', new ProfileRoutes().getProfileRoutes());
   }
 
   public start(port: number): void {
