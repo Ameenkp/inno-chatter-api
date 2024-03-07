@@ -1,7 +1,8 @@
 // src/models/UserModel.ts
-import { Document, Schema, model } from 'mongoose';
+import { Document, Error, model, Schema } from 'mongoose';
 import slugify from 'slugify';
 import validator from 'validator';
+import bcrypt from 'bcrypt';
 
 export interface IUser extends Document {
   id: string;
@@ -49,3 +50,13 @@ userSchema.pre('save', function preSave(this: IUser, next) {
   next();
 });
 export const UserModel = model<IUser>('User', userSchema);
+
+export async function createUser(data: Partial<IUser>): Promise<IUser> {
+  try {
+    data.password = await bcrypt.hash(<string>data.password, 10);
+    await UserModel.create(data);
+    return await UserModel.create(data);
+  } catch (error) {
+    throw new Error(`Error creating tour: ${(error as Error).message}`);
+  }
+}

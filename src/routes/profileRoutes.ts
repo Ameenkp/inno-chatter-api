@@ -11,20 +11,27 @@ export class ProfileRoutes {
   }
 
   private setupRoutes(): void {
-    this.router.get('/profile', passport.authenticate('local'), this.getProfile.bind(this));
-    this.router.put('/profile', passport.authenticate('local'), this.updateProfile.bind(this));
+    this.router.get('/show', this.ensureAuthenticated, this.getProfile.bind(this));
+    this.router.put('/update', this.ensureAuthenticated, this.updateProfile.bind(this));
   }
 
   private getProfile(req: Request, res: Response): void {
+    console.log(req.user);
     res.json({ message: 'Profile retrieved successfully.', user: req.user });
   }
 
   private updateProfile(req: Request, res: Response): void {
-    // Update user profile logic here
     res.json({ message: 'Profile updated successfully.' });
   }
 
   public getProfileRoutes(): Router {
     return this.router;
+  }
+
+  private ensureAuthenticated(req: Request, res: Response, next: NextFunction): void {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.status(401).json({ message: 'Unauthorized. Please log in.' });
   }
 }
