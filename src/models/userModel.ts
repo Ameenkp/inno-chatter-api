@@ -3,6 +3,7 @@ import { Document, Error, model, Schema } from 'mongoose';
 import slugify from 'slugify';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
+import { Request, Response } from 'express';
 
 export interface IUser extends Document {
   id: string;
@@ -58,5 +59,16 @@ export async function createUser(data: Partial<IUser>): Promise<IUser> {
     return await UserModel.create(data);
   } catch (error) {
     throw new Error(`Error creating tour: ${(error as Error).message}`);
+  }
+}
+
+export async function updateUserDetails(
+  id: string,
+  updateData: Partial<IUser>
+): Promise<IUser | null> {
+  try {
+    return await UserModel.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+  } catch (error) {
+    throw new Error(`Error updating profile: ${(error as Error).message}`);
   }
 }

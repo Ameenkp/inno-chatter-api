@@ -1,27 +1,23 @@
 // src/routes/ProfileRoutes.ts
 import { Router, Request, Response, NextFunction } from 'express';
 import passport from 'passport';
+import { ProfileController } from '../controller/profileController';
 
 export class ProfileRoutes {
   public router: Router;
+  public profileController: ProfileController;
 
   constructor() {
     this.router = Router();
+    this.profileController = new ProfileController();
     this.setupRoutes();
   }
 
   private setupRoutes(): void {
-    this.router.get('/show', this.ensureAuthenticated, this.getProfile.bind(this));
-    this.router.put('/update', this.ensureAuthenticated, this.updateProfile.bind(this));
-  }
-
-  private getProfile(req: Request, res: Response): void {
-    console.log(req.user);
-    res.json({ message: 'Profile retrieved successfully.', user: req.user });
-  }
-
-  private updateProfile(req: Request, res: Response): void {
-    res.json({ message: 'Profile updated successfully.' });
+    this.router
+      .route('/')
+      .get(this.ensureAuthenticated, this.profileController.getProfile.bind(this))
+      .patch(this.ensureAuthenticated, this.profileController.updateProfile.bind(this));
   }
 
   public getProfileRoutes(): Router {

@@ -8,7 +8,7 @@ import { ProfileRoutes } from './routes/profileRoutes';
 import { Utils } from './utils/utils';
 import MongoStore from 'connect-mongo';
 import { Constants } from './config/constants';
-import {ErrorHandler} from "./middlewear/errorHandler";
+import { ErrorHandler } from './middlewear/errorHandler';
 
 export class App {
   private app: Application;
@@ -48,7 +48,6 @@ export class App {
     this.app.use('/api/v1/user', new UserRoutes().getUserRouter());
     this.app.use('/api/v1/profile', new ProfileRoutes().getProfileRoutes());
   }
-
 
   private errorMiddleware(): void {
     this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
