@@ -1,5 +1,5 @@
 import { IUser, updateUserDetails, UserModel } from '../models/userModel';
-import {NextFunction, Request, Response} from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 export class ProfileController {
   getProfile(req: Request, res: Response): void {
@@ -8,7 +8,7 @@ export class ProfileController {
     res.json({ message: 'Profile retrieved successfully.', user: user });
   }
 
-  async updateProfile(req: Request, res: Response , next: NextFunction) {
+  async updateProfile(req: Request, res: Response, next: NextFunction) {
     try {
       const updateData: Partial<IUser> = req.body;
       const userData: Partial<IUser> = <IUser>req.user;

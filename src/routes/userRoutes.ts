@@ -5,8 +5,7 @@ import { UserController } from '../controller/userController';
 
 export class UserRoutes {
   private readonly router: Router;
-
-  private userController: UserController;
+  private readonly userController: UserController;
 
   constructor() {
     this.router = Router();
@@ -21,6 +20,17 @@ export class UserRoutes {
       passport.authenticate('local'),
       this.userController.login.bind(this.userController)
     );
+    this.router.get('/auth' , this.ensureAuthenticated , (req: Request, res: Response) => {
+      res.status(200).json({ message: 'Authenticated' , isAuthenticated: true });
+    });
+    this.router.get('/logout', this.ensureAuthenticated, this.userController.logout.bind(this.userController));
+  }
+
+  public ensureAuthenticated(req: Request, res: Response, next: NextFunction): void {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.status(401).json({ message: 'Unauthorized. Please log in.' });
   }
 
   public getUserRouter(): Router {

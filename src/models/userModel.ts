@@ -66,6 +66,7 @@ export async function updateUserDetails(
   updateData: Partial<IUser>
 ): Promise<IUser | null> {
   try {
+    updateData.password = await bcrypt.hash(<string>updateData.password, 10);
     return await UserModel.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
   } catch (error) {
     throw new Error(`Error updating profile: ${(error as Error).message}`);

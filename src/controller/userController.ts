@@ -25,4 +25,13 @@ export class UserController {
       },
     });
   }
+
+  public logout(req: Request, res: Response, next: NextFunction): void {
+    req.logout((err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error during logout.' });
+      }
+      return res.status(200).json({ message: 'Logged out successfully.' });
+    });
+  }
 }
