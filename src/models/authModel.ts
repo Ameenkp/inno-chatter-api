@@ -1,4 +1,4 @@
-import {Error, model, Schema} from 'mongoose';
+import { Error, model, Schema } from 'mongoose';
 import validator from 'validator';
 
 export interface IUser extends Document {
@@ -27,7 +27,7 @@ const registerSchema = new Schema<IUser>(
       trim: true,
       select: false,
       minlength: 8,
-      validate:[validator.isStrongPassword, 'A user must have a strong password']
+      validate: [validator.isStrongPassword, 'A user must have a strong password'],
     },
     image: {
       type: String,
@@ -39,9 +39,9 @@ const registerSchema = new Schema<IUser>(
 export const UserModel = model<IUser>('user', registerSchema);
 
 export async function createUser(user: Partial<IUser>): Promise<IUser> {
-    try {
-        return await UserModel.create(user);
-    } catch (error) {
-        throw new Error(`Error creating tour: ${(error as Error).message}`);
-    }
+  try {
+    return await UserModel.create(user);
+  } catch (error) {
+    throw new Error(`Error creating tour: ${(error as Error).message}`);
+  }
 }

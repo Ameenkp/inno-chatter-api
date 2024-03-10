@@ -4,7 +4,7 @@ import validator from 'validator';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import {createUser, IUser, UserModel} from '../models/authModel';
+import { createUser, UserModel } from '../models/authModel';
 import { Constants } from '../config/constants';
 import { promisify } from 'node:util';
 import path from 'path';
@@ -24,7 +24,6 @@ export class AuthController {
     const form = formidable();
     form.parse(req, async (err, fields: any, files) => {
       const { userName, email, password, confirmPassword } = fields;
-      const { image } = files;
 
       const error = AuthController.validateRegistrationData(
         userName[0],
@@ -46,7 +45,7 @@ export class AuthController {
             password: await bcrypt.hash(password[0], 10),
             image: newImageName,
           };
-          const userCreate = await createUser(newUserDetails)
+          const userCreate = await createUser(newUserDetails);
           const token = AuthController.generateAuthToken(userCreate);
           AuthController.sendAuthToken(res, token);
         } catch (error) {

@@ -3,6 +3,17 @@ import jwt from 'jsonwebtoken';
 import { Constants } from '../config/constants';
 
 export class AuthMiddleware {
+
+  /**
+   * checks for an "authToken" in the request cookies,
+   * verifies it using JWT, and sets "myId" in the request if successful.
+   * If there's no token, it handles the error using methods from the "AuthMiddleware"
+   *
+   * @param {Request} req - the request object
+   * @param {Response} res - the response object
+   * @param {NextFunction} next - the next function
+   * @return {Promise<void>} a promise that resolves to void
+   */
   public static async authenticate(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { authToken } = req.cookies;
 

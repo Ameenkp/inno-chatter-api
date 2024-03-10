@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { IUser, UserModel } from '../models/authModel';
-import { MessageModel } from '../models/messageModel';
+import {UserModel } from '../models/authModel';
+import { getLastMessage, MessageModel } from '../models/messageModel';
 import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
@@ -28,7 +28,7 @@ export class MessengerController {
         const fdId: string = friendGet[i].id;
 
         // @ts-ignore
-        const lmsg = await MessengerController.getLastMessage(myId, fdId);
+        const lmsg = await getLastMessage(myId, fdId);
         fnd_msg = [
           ...fnd_msg,
           {
@@ -42,52 +42,6 @@ export class MessengerController {
       console.log('failed to retrieve friends', error as Error);
       next(error);
     }
-  }
-
-  /**
-   * Get the last message for the given user IDs.
-   *
-   * @param {string} myId - The ID of the current user
-   * @param {string} fdId - The ID of the other user
-   * @return {Promise<any>} A Promise that resolves with the last message
-   */
-  public static async getLastMessage(myId: string, fdId: string): Promise<any> {
-    console.log('hi');
-    const msg: any = await MessageModel.findOne({
-      $or: [
-        {
-          $and: [
-            {
-              senderId: {
-                $eq: myId,
-              },
-            },
-            {
-              reseverId: {
-                $eq: fdId,
-              },
-            },
-          ],
-        },
-        {
-          $and: [
-            {
-              senderId: {
-                $eq: fdId,
-              },
-            },
-            {
-              reseverId: {
-                $eq: myId,
-              },
-            },
-          ],
-        },
-      ],
-    }).sort({
-      updatedAt: -1,
-    });
-    return msg;
   }
 
   /**
