@@ -1,12 +1,11 @@
-import {NextFunction, Request, Response} from 'express';
-import {IUser, UserModel} from '../models/authModel';
+import { NextFunction, Request, Response } from 'express';
+import { IUser, UserModel } from '../models/authModel';
 import { MessageModel } from '../models/messageModel';
 import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 
 export class MessengerController {
-
   /**
    * A function to retrieve the friends of a user and their last messages.
    *
@@ -15,19 +14,18 @@ export class MessengerController {
    * @param {NextFunction} next - the next function
    * @return {Promise<void>} returns a promise with void value
    */
-  public static async getFriends(req: Request, res: Response , next: NextFunction): Promise<void> {
+  public static async getFriends(req: Request, res: Response, next: NextFunction): Promise<void> {
     // @ts-ignore
     const myId = req.myId;
     let fnd_msg: any[] = [];
     try {
-      const friendGet :any[] = await UserModel.find({
+      const friendGet: any[] = await UserModel.find({
         _id: {
           $ne: myId,
         },
       });
       for (let i = 0; i < friendGet.length; i++) {
-
-        const fdId :string = friendGet[i].id;
+        const fdId: string = friendGet[i].id;
 
         // @ts-ignore
         const lmsg = await MessengerController.getLastMessage(myId, fdId);
@@ -41,6 +39,7 @@ export class MessengerController {
       }
       res.status(200).json({ success: true, friends: fnd_msg });
     } catch (error) {
+      console.log('failed to retrieve friends', error as Error);
       next(error);
     }
   }
@@ -53,7 +52,7 @@ export class MessengerController {
    * @return {Promise<any>} A Promise that resolves with the last message
    */
   public static async getLastMessage(myId: string, fdId: string): Promise<any> {
-    console.log('hi')
+    console.log('hi');
     const msg: any = await MessageModel.findOne({
       $or: [
         {
@@ -96,9 +95,10 @@ export class MessengerController {
    *
    * @param {Request} req - the request object
    * @param {Response} res - the response object
+   * @param {NextFunction} next - the next function
    * @return {Promise<void>} a promise that resolves to void
    */
-  public static async messageUploadDB(req: Request, res: Response): Promise<void> {
+  public static async messageUploadDB(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { senderName, reseverId, message } = req.body;
     // @ts-ignore
     const senderId = req.myId;
@@ -117,22 +117,20 @@ export class MessengerController {
         message: insertMessage,
       });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          errorMessage: 'Internal Sever Error',
-        },
-      });
+      console.log('failed to insert message into DB ', error as Error);
+      next(error);
     }
   }
 
   /**
-   * A description of the entire function.
+   * Get messages based on sender and receiver IDs.
    *
    * @param {Request} req - the request object
    * @param {Response} res - the response object
-   * @return {Promise<void>} a promise that resolves to void
+   * @param {NextFunction} next - the next middleware function
+   * @return {Promise<void>} an empty promise
    */
-  public static async messageGet(req: Request, res: Response): Promise<void> {
+  public static async messageGet(req: Request, res: Response, next: NextFunction): Promise<void> {
     // @ts-ignore
     const myId = req.myId;
     const fdId = req.params.id;
@@ -174,11 +172,8 @@ export class MessengerController {
         message: getAllMessage,
       });
     } catch (error) {
-      res.status(500).json({
-        error: {
-          errorMessage: 'Internal Server error',
-        },
-      });
+      console.log('failed to retrieve messages ', error as Error);
+      next(error);
     }
   }
 
@@ -187,9 +182,10 @@ export class MessengerController {
    *
    * @param {Request} req - the request object
    * @param {Response} res - the response object
-   * @return {void}
+   * @param {NextFunction} next - the next function
+   * @return {void} void
    */
-  public static ImageMessageSend(req: Request, res: Response): void {
+  public static ImageMessageSend(req: Request, res: Response, next: NextFunction): void {
     // @ts-ignore
     const senderId = req.myId;
     const form = formidable();
@@ -226,11 +222,8 @@ export class MessengerController {
           }
         });
       } catch (error) {
-        res.status(500).json({
-          error: {
-            errorMessage: 'Internal Sever Error',
-          },
-        });
+        console.log('failed to insert message into DB ', error as Error);
+        next(error);
       }
     });
   }
@@ -240,25 +233,22 @@ export class MessengerController {
    *
    * @param {Request} req - the request object
    * @param {Response} res - the response object
+   * @param {NextFunction} next - the next function
    * @return {Promise<void>} a promise that resolves to void
    */
-  public static async messageSeen(req: Request, res: Response): Promise<void> {
-    const messageId = req.body._id;
-    await MessageModel.findByIdAndUpdate(messageId, {
-      status: 'seen',
-    })
-      .then(() => {
-        res.status(200).json({
-          success: true,
-        });
-      })
-      .catch(() => {
-        res.status(500).json({
-          error: {
-            errorMessage: 'Internal Server Error',
-          },
-        });
+  public static async messageSeen(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const messageId = req.body._id;
+      await MessageModel.findByIdAndUpdate(messageId, {
+        status: 'seen',
       });
+      res.status(200).json({
+        success: true,
+      });
+    } catch (error) {
+      console.error('failed to mark message as seen', error);
+      next(error);
+    }
   }
 
   /**
@@ -266,24 +256,23 @@ export class MessengerController {
    *
    * @param {Request} req - the request object
    * @param {Response} res - the response object
+   * @param {NextFunction} next - the next function
    * @return {Promise<void>} a promise that resolves when the message is marked as delivered
    */
-  public static async deliveredMessage(req: Request, res: Response): Promise<void> {
-    const messageId = req.body._id;
-    await MessageModel.findByIdAndUpdate(messageId, {
-      status: 'delivered',
-    })
-      .then(() => {
-        res.status(200).json({
-          success: true,
-        });
-      })
-      .catch(() => {
-        res.status(500).json({
-          error: {
-            errorMessage: 'Internal Server Error',
-          },
-        });
+  public static async deliveredMessage(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const messageId = req.body._id;
+
+      await MessageModel.findByIdAndUpdate(messageId, {
+        status: 'delivered',
       });
+
+      res.status(200).json({
+        success: true,
+      });
+    } catch (error) {
+      console.error('failed to mark message as delivered', error);
+      next(error);
+    }
   }
 }

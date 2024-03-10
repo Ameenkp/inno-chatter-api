@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import {Constants} from "../config/constants";
+import { Constants } from '../config/constants';
 
 export class AuthMiddleware {
   public static async authenticate(req: Request, res: Response, next: NextFunction): Promise<void> {

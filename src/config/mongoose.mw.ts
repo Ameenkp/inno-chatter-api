@@ -16,9 +16,8 @@ export class MongooseConfig {
         dbName: Constants.MONGO_DB_NAME,
       });
     } catch (error) {
-      console.log(connectionString)
-      console.log(error);
-      throw new Error('Failed to connect to DB , check your connection string');
+      console.log('DB connection failed ',error);
+      throw new Error('Internal Server Error');
     }
   }
 }

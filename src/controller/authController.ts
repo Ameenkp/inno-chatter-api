@@ -1,16 +1,16 @@
-import {NextFunction, Request, Response} from 'express';
+import { NextFunction, Request, Response } from 'express';
 import formidable from 'formidable';
 import validator from 'validator';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UserModel } from '../models/authModel';
+import {createUser, IUser, UserModel} from '../models/authModel';
 import { Constants } from '../config/constants';
 import { promisify } from 'node:util';
+import path from 'path';
 
 export class AuthController {
   private static copyFileAsync = promisify(fs.copyFile);
-
 
   /**
    * Handle user registration.
@@ -20,7 +20,7 @@ export class AuthController {
    * @param {NextFunction} next - the next function
    * @return {void}
    */
-  public static userRegister(req: Request, res: Response , next: NextFunction): void {
+  public static userRegister(req: Request, res: Response, next: NextFunction): void {
     const form = formidable();
     form.parse(req, async (err, fields: any, files) => {
       const { userName, email, password, confirmPassword } = fields;
@@ -39,16 +39,18 @@ export class AuthController {
       } else {
         try {
           const newImageName = await AuthController.saveUserImage(files.image);
-          const userCreate = await UserModel.create({
+
+          const newUserDetails = {
             userName: userName[0],
             email: email[0],
             password: await bcrypt.hash(password[0], 10),
             image: newImageName,
-          });
+          };
+          const userCreate = await createUser(newUserDetails)
           const token = AuthController.generateAuthToken(userCreate);
           AuthController.sendAuthToken(res, token);
         } catch (error) {
-          console.log(error);
+          console.log('Failed to register user', error as Error);
           next(error);
         }
       }
@@ -56,20 +58,21 @@ export class AuthController {
   }
 
   /**
-   * Perform user login using email and password.
+   * Handle user login.
    *
    * @param {Request} req - the request object
    * @param {Response} res - the response object
-   * @return {Promise<void>} promise that resolves when the login is complete
+   * @param {NextFunction} next - the next function
+   * @return {void}
    */
-  public static async userLogin(req: Request, res: Response): Promise<void> {
+  public static async userLogin(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { email, password } = req.body;
     const error = AuthController.validateLoginData(email, password);
 
     if (error.length > 0) {
       res.status(400).json({ error: { errorMessage: error } });
     } else {
-      await AuthController.authenticateUser(email, password, res);
+      await AuthController.authenticateUser(email, password, res, next);
     }
   }
 
@@ -139,10 +142,8 @@ export class AuthController {
   private static async saveUserImage(image: any): Promise<string> {
     try {
       const randNumber = Math.floor(Math.random() * 99999);
-      console.log(image);
-      console.log(image[0].filepath);
       const newImageName = randNumber + image[0].originalFilename;
-      const newPath = __dirname + `/public/image/${newImageName}`;
+      const newPath = path.join(__dirname + '../../../public/image/', newImageName);
       await this.copyFileAsync(image[0].filepath, newPath);
       return newImageName;
     } catch (error) {
@@ -212,14 +213,20 @@ export class AuthController {
   }
 
   /**
-   * Authenticate user with email and password.
+   * Authenticates a user.
    *
-   * @param {string} email - the user's email
-   * @param {string} password - the user's password
+   * @param {string} email - the email of the user
+   * @param {string} password - the password of the user
    * @param {Response} res - the response object
-   * @return {Promise<void>} a promise that resolves once authentication is complete
+   * @param {NextFunction} next - the next function
+   * @return {Promise<void>} promise that resolves when the authentication is complete
    */
-  private static async authenticateUser(email: string, password: string, res: Response): Promise<void> {
+  private static async authenticateUser(
+    email: string,
+    password: string,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const checkUser = await UserModel.findOne({ email: email }).select('+password');
 
@@ -243,23 +250,10 @@ export class AuthController {
           },
         });
       }
-    } catch {
-      AuthController.handleInternalError(res);
+    } catch (error) {
+      console.log('Authentication Failed', error as Error);
+      next(error);
     }
-  }
-
-  /**
-   * A function to handle internal errors.
-   *
-   * @param {Response} res - the response object
-   * @return {void} no return value
-   */
-  private static handleInternalError(res: Response): void {
-    res.status(500).json({
-      error: {
-        errorMessage: ['Internal Server Error'],
-      },
-    });
   }
 
   /**
