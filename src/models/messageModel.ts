@@ -1,27 +1,46 @@
-// src/models/MessageModel.ts
-import {Document, Error, model, Schema} from 'mongoose';
+import { model, Schema } from 'mongoose';
+import { IUser } from './authModel';
 
-export interface IMessage extends Document {
-    user: string;
+export interface IMessage {
+  senderId: string;
+  senderName: string;
+  reseverId: string;
+  message: {
     text: string;
-    timestamp: Date;
+    image: string;
+  };
+  status: string;
 }
 
-const messageSchema = new Schema<IMessage>({
-    user: { type: String, required: true },
-    text: { type: String, required: true },
-    timestamp: { type: Date, default: Date.now },
-});
-
-export const MessageModel = model<IMessage>('Message', messageSchema);
-
-
-export async function saveMessageToDatabase(data : Partial<IMessage>): Promise<void> {
-    try {
-        await MessageModel.create(data);
-        console.log('Message saved to the database');
-} catch (error) {
-    console.error('Error saving message to db:', (error as Error).message);
-    throw new Error('Error occurred while saving the chat message to the database');
-}
-}
+const messageSchema = new Schema(
+  {
+    senderId: {
+      type: String,
+      required: [true, 'Please provide a sender id'],
+    },
+    senderName: {
+      type: String,
+      required: [true, 'Please provide a sender name'],
+    },
+    reseverId: {
+      type: String,
+      required: [true, 'Please provide a receiver id'],
+    },
+    message: {
+      text: {
+        type: String,
+        default: '',
+      },
+      image: {
+        type: String,
+        default: '',
+      },
+    },
+    status: {
+      type: String,
+      default: 'unseen',
+    },
+  },
+  { timestamps: true }
+);
+export const MessageModel = model<IMessage>('message', messageSchema);
