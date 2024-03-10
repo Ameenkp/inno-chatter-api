@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import {model, Schema} from 'mongoose';
 
 export interface IMessage {
   senderId: string;
@@ -16,6 +16,7 @@ const messageSchema = new Schema(
     senderId: {
       type: String,
       required: [true, 'Please provide a sender id'],
+      index: true,
     },
     senderName: {
       type: String,
@@ -24,6 +25,7 @@ const messageSchema = new Schema(
     reseverId: {
       type: String,
       required: [true, 'Please provide a receiver id'],
+      index: true,
     },
     message: {
       text: {
@@ -38,6 +40,11 @@ const messageSchema = new Schema(
     status: {
       type: String,
       default: 'unseen',
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+      index: true, // Adding an index to the updatedAt field
     },
   },
   { timestamps: true }
@@ -73,6 +80,15 @@ export async function getLastMessage(myId: string, fdId: string): Promise<any> {
   }
 }
 
+/**
+ * retrieves all messages for the given user IDs using the MessageModel.
+ * It uses the find method to search for messages where the senderId and receiverId match the provided user IDs.
+ * If an error occurs, it throws an error message.
+ *
+ * @param {string} myId - The ID of the user making the request
+ * @param {string} fdId - The ID of the user whose messages are being retrieved
+ * @return {Promise<any>} A promise that resolves to an array of messages
+ */
 export async function getAllMessage(myId: string, fdId: string): Promise<any> {
   try {
     return await MessageModel.find({
@@ -90,6 +106,16 @@ export async function getAllMessage(myId: string, fdId: string): Promise<any> {
   }
 }
 
+/**
+ * Inserts a new message into the database.
+ *
+ * @param {string} senderId - The ID of the message sender
+ * @param {string} senderName - The name of the message sender
+ * @param {string} reseverId - The ID of the message receiver
+ * @param {string} newImageName - The name of the new image to be inserted
+ * @return {Promise<IMessage>} A promise that resolves to the inserted message
+ */
+
 export async function insertMessage(
   senderId: string,
   senderName: string,
@@ -97,7 +123,7 @@ export async function insertMessage(
   newImageName: string
 ): Promise<IMessage> {
   try {
-    const insertMessage = await MessageModel.create({
+    return await MessageModel.create({
       senderId: senderId,
       senderName: senderName,
       reseverId: reseverId,
@@ -107,7 +133,6 @@ export async function insertMessage(
         newImageName,
       },
     });
-    return insertMessage;
   } catch (error) {
     throw new Error(`Error inserting message: ${(error as Error).message}`);
   }

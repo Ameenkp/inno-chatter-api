@@ -20,6 +20,7 @@ const registerSchema = new Schema<IUser>(
       unique: true,
       trim: true,
       validate: [validator.isEmail, 'A user must have a valid email'],
+      index: true,
     },
     password: {
       type: String,
@@ -38,6 +39,13 @@ const registerSchema = new Schema<IUser>(
 );
 export const UserModel = model<IUser>('user', registerSchema);
 
+
+/**
+ * Creates a new user.
+ *
+ * @param {Partial<IUser>} user - the user data
+ * @return {Promise<IUser>} the newly created user
+ */
 export async function createUser(user: Partial<IUser>): Promise<IUser> {
   try {
     return await UserModel.create(user);
@@ -46,6 +54,12 @@ export async function createUser(user: Partial<IUser>): Promise<IUser> {
   }
 }
 
+/**
+ * Finds a user by their email.
+ *
+ * @param {String} email - the email of the user
+ * @return {Promise<IUser>} the user found by the email
+ */
 export async function findUserByEmail(email: String): Promise<IUser> {
   try {
     return await UserModel.findOne({ email: email }).select('+password');
