@@ -4,7 +4,7 @@ import validator from 'validator';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser, UserModel } from '../models/authModel';
+import { createUser, findUserByEmail, UserModel } from '../models/authModel';
 import { Constants } from '../config/constants';
 import { promisify } from 'node:util';
 import path from 'path';
@@ -227,7 +227,7 @@ export class AuthController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const checkUser = await UserModel.findOne({ email: email }).select('+password');
+      const checkUser = await findUserByEmail(email);
 
       if (checkUser) {
         const matchPassword = await bcrypt.compare(password, checkUser.password);

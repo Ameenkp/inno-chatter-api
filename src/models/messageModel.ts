@@ -1,4 +1,4 @@
-import {model, Schema} from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 export interface IMessage {
   senderId: string;
@@ -44,7 +44,6 @@ const messageSchema = new Schema(
 );
 export const MessageModel = model<IMessage>('message', messageSchema);
 
-
 /**
  * This function retrieves the last message between two users based on their IDs using the MessageModel.
  * It uses the $or operator to query for messages where the sender and receiver IDs match the provided IDs,
@@ -60,10 +59,10 @@ export async function getLastMessage(myId: string, fdId: string): Promise<any> {
     return await MessageModel.findOne({
       $or: [
         {
-          $and: [{senderId: {$eq: myId}}, {reseverId: {$eq: fdId}}],
+          $and: [{ senderId: { $eq: myId } }, { reseverId: { $eq: fdId } }],
         },
         {
-          $and: [{senderId: {$eq: fdId}}, {reseverId: {$eq: myId}}],
+          $and: [{ senderId: { $eq: fdId } }, { reseverId: { $eq: myId } }],
         },
       ],
     }).sort({
@@ -71,5 +70,45 @@ export async function getLastMessage(myId: string, fdId: string): Promise<any> {
     });
   } catch (error) {
     throw new Error(`Error getting last message: ${(error as Error).message}`);
+  }
+}
+
+export async function getAllMessage(myId: string, fdId: string): Promise<any> {
+  try {
+    return await MessageModel.find({
+      $or: [
+        {
+          $and: [{ senderId: { $eq: myId } }, { reseverId: { $eq: fdId } }],
+        },
+        {
+          $and: [{ senderId: { $eq: fdId } }, { reseverId: { $eq: myId } }],
+        },
+      ],
+    });
+  } catch (error) {
+    throw new Error(`Error getting all messages: ${(error as Error).message}`);
+  }
+}
+
+export async function insertMessage(
+  senderId: string,
+  senderName: string,
+  reseverId: string,
+  newImageName: string
+): Promise<IMessage> {
+  try {
+    const insertMessage = await MessageModel.create({
+      senderId: senderId,
+      senderName: senderName,
+      reseverId: reseverId,
+      message: {
+        text: '',
+        // @ts-ignore
+        newImageName,
+      },
+    });
+    return insertMessage;
+  } catch (error) {
+    throw new Error(`Error inserting message: ${(error as Error).message}`);
   }
 }

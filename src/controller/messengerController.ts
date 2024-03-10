@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import {UserModel } from '../models/authModel';
-import { getLastMessage, MessageModel } from '../models/messageModel';
+import { UserModel } from '../models/authModel';
+import { getAllMessage, getLastMessage, insertMessage, MessageModel } from '../models/messageModel';
 import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
+import { promisify } from 'node:util';
 
 export class MessengerController {
+  private static copyFileAsync = promisify(fs.copyFile);
   /**
    * A function to retrieve the friends of a user and their last messages.
    *
@@ -17,7 +19,7 @@ export class MessengerController {
   public static async getFriends(req: Request, res: Response, next: NextFunction): Promise<void> {
     // @ts-ignore
     const myId = req.myId;
-    let fnd_msg: any[] = [];
+    let fndMsg: any[] = [];
     try {
       const friendGet: any[] = await UserModel.find({
         _id: {
@@ -29,15 +31,15 @@ export class MessengerController {
 
         // @ts-ignore
         const lmsg = await getLastMessage(myId, fdId);
-        fnd_msg = [
-          ...fnd_msg,
+        fndMsg = [
+          ...fndMsg,
           {
             fndInfo: friendGet[i],
             msgInfo: lmsg,
           },
         ];
       }
-      res.status(200).json({ success: true, friends: fnd_msg });
+      res.status(200).json({ success: true, friends: fndMsg });
     } catch (error) {
       console.log('failed to retrieve friends', error as Error);
       next(error);
@@ -89,41 +91,10 @@ export class MessengerController {
     const myId = req.myId;
     const fdId = req.params.id;
     try {
-      let getAllMessage = await MessageModel.find({
-        $or: [
-          {
-            $and: [
-              {
-                senderId: {
-                  $eq: myId,
-                },
-              },
-              {
-                reseverId: {
-                  $eq: fdId,
-                },
-              },
-            ],
-          },
-          {
-            $and: [
-              {
-                senderId: {
-                  $eq: fdId,
-                },
-              },
-              {
-                reseverId: {
-                  $eq: myId,
-                },
-              },
-            ],
-          },
-        ],
-      });
+      const getAllMessages = await getAllMessage(myId, fdId);
       res.status(200).json({
         success: true,
-        message: getAllMessage,
+        message: getAllMessages,
       });
     } catch (error) {
       console.log('failed to retrieve messages ', error as Error);
@@ -143,37 +114,15 @@ export class MessengerController {
     // @ts-ignore
     const senderId = req.myId;
     const form = formidable();
-    form.parse(req, (err, fields, files) => {
+    form.parse(req, async (err, fields, files) => {
       const { senderName, reseverId, imageName } = fields;
-      const newPath = path.join(__dirname + `../../../frontend/public/image/${imageName}`);
-
-      // @ts-ignore
-      files.image.originalFilename = imageName;
       try {
+        await MessengerController.saveImage(files.image);
         // @ts-ignore
-        fs.copyFile(files?.image?.filepath, newPath, async (err) => {
-          if (err) {
-            res.status(500).json({
-              error: {
-                errorMessage: 'Image upload fail',
-              },
-            });
-          } else {
-            const insertMessage = await MessageModel.create({
-              senderId: senderId,
-              senderName: senderName,
-              reseverId: reseverId,
-              message: {
-                text: '',
-                // @ts-ignore
-                image: files?.image?.originalFilename,
-              },
-            });
-            res.status(201).json({
-              success: true,
-              message: insertMessage,
-            });
-          }
+        const insertMessages = await insertMessage(senderId, senderName[0], reseverId[0], imageName[0]);
+        res.status(201).json({
+          success: true,
+          message: insertMessages,
         });
       } catch (error) {
         console.log('failed to insert message into DB ', error as Error);
@@ -227,6 +176,16 @@ export class MessengerController {
     } catch (error) {
       console.error('failed to mark message as delivered', error);
       next(error);
+    }
+  }
+
+  private static async saveImage(image: any): Promise<void> {
+    try {
+      const newPath = path.join(__dirname + '../../../public/image/', image[0].newFilename ,'.jpeg');
+      await this.copyFileAsync(image[0].filepath, newPath);
+    } catch (error) {
+      console.error('Error saving user image:', error);
+      throw error;
     }
   }
 }

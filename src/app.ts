@@ -8,7 +8,7 @@ import path from 'path';
 import { MessengerRouter } from './routes/messengerRoutes';
 import { AuthRouter } from './routes/authRouter';
 import cookieParser from 'cookie-parser';
-import {SocketServer} from "./socket";
+import { SocketServer } from './socket';
 
 export class App {
   private readonly app: Application;

@@ -1,18 +1,15 @@
-import express, { Request, Response, Router } from 'express';
+import express, { Router } from 'express';
 import { MessengerController } from '../controller/messengerController';
 import { AuthMiddleware } from '../middlewear/authMiddleware';
 
 export class MessengerRouter {
+
   private readonly router: Router;
 
-  private messengerController: MessengerController;
-  private authMiddleware: AuthMiddleware;
 
   constructor() {
     this.router = express.Router();
     this.setupRoutes();
-    this.messengerController = new MessengerController();
-    this.authMiddleware = new AuthMiddleware();
   }
 
   /**

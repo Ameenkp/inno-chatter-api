@@ -45,3 +45,11 @@ export async function createUser(user: Partial<IUser>): Promise<IUser> {
     throw new Error(`Error creating tour: ${(error as Error).message}`);
   }
 }
+
+export async function findUserByEmail(email: String): Promise<IUser> {
+  try {
+    return await UserModel.findOne({ email: email }).select('+password');
+  } catch (error) {
+    throw new Error(`Error creating tour: ${(error as Error).message}`);
+  }
+}

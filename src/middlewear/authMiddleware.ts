@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import { Constants } from '../config/constants';
 
 export class AuthMiddleware {
-
   /**
    * checks for an "authToken" in the request cookies,
    * verifies it using JWT, and sets "myId" in the request if successful.
