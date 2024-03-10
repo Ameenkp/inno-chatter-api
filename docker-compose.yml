@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: my-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: byte_cat
+      MONGO_INITDB_ROOT_PASSWORD: byte_cat
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - my-network
+
+  inno-chatter-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: inno-chatter-api
+    restart: always
+    ports:
+      - "3005:3005"
+    depends_on:
+      - mongodb
+    environment:
+      MONGODB_URI: mongodb://byte_cat:byte_cat@mongodb:27017
+      MONGODB_URI_LOCAL: mongodb://byte_cat:byte_cat@mongodb:27017
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  mongodb-data:
+    driver: local
