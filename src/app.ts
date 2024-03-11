@@ -10,6 +10,9 @@ import { AuthRouter } from './routes/authRouter';
 import cookieParser from 'cookie-parser';
 import { SocketServer } from './socket';
 import { InnoChatterApiError } from './error/innoChatterApiError';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerOptions from "../swaggerOptions";
 
 export class App {
   public readonly app: Application;
@@ -23,6 +26,7 @@ export class App {
     this.errorHandler = new ErrorHandler();
     this.appConfig();
     this.socketServer = new SocketServer(this.server);
+    this.setupSwagger();
     this.routeMountings();
     this.serveStaticFiles();
     this.errorMiddleware();
@@ -61,6 +65,14 @@ export class App {
   public serveStaticFiles(): void {
     const staticFilesDir = path.join(__dirname, '../public');
     this.app.use(express.static(staticFilesDir));
+  }
+
+  /**
+   * Set up Swagger documentation.
+   */
+  public setupSwagger(): void {
+    const specs = swaggerJSDoc(swaggerOptions);
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs , { explorer: true }));
   }
 
   /**
