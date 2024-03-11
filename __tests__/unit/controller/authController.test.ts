@@ -29,6 +29,9 @@ describe('authController tests', () => {
         password: 'ilan',
         email: 'ilan_hi@gmail.com',
       },
+      headers: {
+        "content-length": '123',
+      },
       cookies: {
         authToken: 'valid-token',
       },
@@ -47,7 +50,6 @@ describe('authController tests', () => {
       image: '62096background-123.jpeg',
     };
   });
-
   test('should validate user password up on login', async () => {
     mockRequest.body.password = '';
     await AuthController.userLogin(mockRequest as Request, mockResponse as Response, mockNext);
@@ -113,5 +115,12 @@ describe('authController tests', () => {
     } catch (error) {
       expect(mockNext).toHaveBeenCalled()
     }
+  });
+
+  test('should invalidate token upon logout', async () => {
+    AuthController.userLogout(mockRequest as Request, mockResponse as Response);
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
+    expect(mockResponse.cookie).toHaveBeenCalledWith('authToken', "");
+    expect(mockResponse.json).toHaveBeenCalledWith({"success": true});
   });
 });

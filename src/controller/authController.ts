@@ -1,17 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import formidable from 'formidable';
 import validator from 'validator';
-import fs from 'fs';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser, findUserByEmail } from '../models/authModel';
+import {createUser, findUserByEmail} from '../models/authModel';
 import { Constants } from '../config/constants';
-import { promisify } from 'node:util';
-import path from 'path';
+import {Utils} from "../utils/utils";
 
 export class AuthController {
-  private static copyFileAsync = promisify(fs.copyFile);
-
   /**
    * Handle user registration.
    *
@@ -37,7 +33,7 @@ export class AuthController {
         res.status(400).json({ error: { errorMessage: error } });
       } else {
         try {
-          const newImageName = await AuthController.saveUserImage(files.image);
+          const newImageName = await Utils.saveUserImage(files.image);
 
           const newUserDetails = {
             userName: userName[0],
@@ -130,25 +126,6 @@ export class AuthController {
     }
 
     return error;
-  }
-
-  /**
-   * A function to save a user image.
-   *
-   * @param {any} image - the user image to be saved
-   * @return {Promise<string>} the new image name
-   */
-  private static async saveUserImage(image: any): Promise<string> {
-    try {
-      const randNumber = Math.floor(Math.random() * 99999);
-      const newImageName = randNumber + image[0].originalFilename;
-      const newPath = path.join(__dirname + '../../../public/image/', newImageName);
-      await this.copyFileAsync(image[0].filepath, newPath);
-      return newImageName;
-    } catch (error) {
-      console.error('Error saving user image:', error);
-      throw error;
-    }
   }
 
   /**

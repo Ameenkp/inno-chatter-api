@@ -1,13 +1,37 @@
 import crypto from 'crypto';
+import path from "path";
+import {promisify} from "node:util";
+import fs from "fs";
 
 export class Utils {
-  public static generateSecretKey(): string {
-    const key = crypto.randomBytes(32).toString('hex');
-    console.log(key);
-    return key;
+  static copyFileAsync = promisify(fs.copyFile);
+  /**
+   * A function to save a user image.
+   *
+   * @param {any} image - the user image to be saved
+   * @return {Promise<string>} the new image name
+   */
+  public static async saveUserImage(image: any): Promise<string> {
+    try {
+      const randNumber = Math.floor(Math.random() * 99999);
+      const newImageName = randNumber + image[0].originalFilename;
+      const newPath = path.join(__dirname + '../../../public/image/', newImageName);
+      await this.copyFileAsync(image[0].filepath, newPath);
+      return newImageName;
+    } catch (error) {
+      console.error('Error saving user image:', error);
+      throw new Error('Failed to save user image' , error as Error);
+    }
   }
 
-  public static uniqueKey(): string {
-    return 'keyafa11aeade91c92e6fe530a9b542c8eb884f3e51c43b15ebf0d0481fad6619e8';
+  public static async saveImage(image: any): Promise<void> {
+    try {
+      const newPath = path.join(__dirname + '../../../public/image/', image[0].newFilename, '.jpeg');
+      await this.copyFileAsync(image[0].filepath, newPath);
+    } catch (error) {
+      console.error('Error saving user image:', error);
+      throw new Error('Failed to save chat image' , error as Error);
+
+    }
   }
 }

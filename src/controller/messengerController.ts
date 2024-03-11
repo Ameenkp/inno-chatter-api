@@ -5,6 +5,7 @@ import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 import { promisify } from 'node:util';
+import {Utils} from "../utils/utils";
 
 export class MessengerController {
   private static copyFileAsync = promisify(fs.copyFile);
@@ -117,7 +118,7 @@ export class MessengerController {
     form.parse(req, async (err, fields, files) => {
       const { senderName, reseverId, imageName } = fields;
       try {
-        await MessengerController.saveImage(files.image);
+        await Utils.saveImage(files.image);
         // @ts-ignore
         const insertMessages = await insertMessage(senderId, senderName[0], reseverId[0], imageName[0]);
         res.status(201).json({
@@ -176,16 +177,6 @@ export class MessengerController {
     } catch (error) {
       console.error('failed to mark message as delivered', error);
       next(error);
-    }
-  }
-
-  private static async saveImage(image: any): Promise<void> {
-    try {
-      const newPath = path.join(__dirname + '../../../public/image/', image[0].newFilename, '.jpeg');
-      await this.copyFileAsync(image[0].filepath, newPath);
-    } catch (error) {
-      console.error('Error saving user image:', error);
-      throw error;
     }
   }
 }
