@@ -39,3 +39,5 @@ package-lock.json
 commands.sh
 
 request.rest
+
+coverage

@@ -4,7 +4,7 @@ import validator from 'validator';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser, findUserByEmail, UserModel } from '../models/authModel';
+import { createUser, findUserByEmail } from '../models/authModel';
 import { Constants } from '../config/constants';
 import { promisify } from 'node:util';
 import path from 'path';
@@ -181,7 +181,9 @@ export class AuthController {
    * @return {void}
    */
   private static sendAuthToken(res: Response, token: string): void {
-    const options = { expires: new Date(Date.now() + Constants.COOKIE_EXPIRATION * 24 * 60 * 60 * 1000) };
+    const options = {
+      expires: new Date(Date.now() + Constants.COOKIE_EXPIRATION * 24 * 60 * 60 * 1000),
+    };
     res.status(201).cookie('authToken', token, options).json({
       successMessage: 'Your Register Successful',
       token,

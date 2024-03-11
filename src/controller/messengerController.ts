@@ -181,7 +181,7 @@ export class MessengerController {
 
   private static async saveImage(image: any): Promise<void> {
     try {
-      const newPath = path.join(__dirname + '../../../public/image/', image[0].newFilename ,'.jpeg');
+      const newPath = path.join(__dirname + '../../../public/image/', image[0].newFilename, '.jpeg');
       await this.copyFileAsync(image[0].filepath, newPath);
     } catch (error) {
       console.error('Error saving user image:', error);

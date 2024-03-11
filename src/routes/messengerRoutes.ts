@@ -3,9 +3,7 @@ import { MessengerController } from '../controller/messengerController';
 import { AuthMiddleware } from '../middlewear/authMiddleware';
 
 export class MessengerRouter {
-
   private readonly router: Router;
-
 
   constructor() {
     this.router = express.Router();

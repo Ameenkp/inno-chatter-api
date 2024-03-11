@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["node" , "express"],
+    "types": ["node" , "express" , "jest"],
     "target": "ES2022",
     "module": "commonjs",
     "lib": ["ESNext", "DOM"],
@@ -17,7 +17,11 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+//    "forceConsistentCasingInFileNames": true,
+//    "noEmitOnError": true,
+//    "allowSyntheticDefaultImports": true,
+//    "noFallthroughCasesInSwitch": true
+
   },
   "include": ["server.ts", "src/**/*.ts"],
   "exclude": ["node_modules" , "dist" , "coverage"]

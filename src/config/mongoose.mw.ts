@@ -1,9 +1,8 @@
 // src/config/Mongoose.ts
-import mongoose, { ConnectOptions } from 'mongoose';
+import mongoose from 'mongoose';
 import { Constants } from './constants';
 
 export class MongooseConfig {
-
   /**
    * Connects to the local database.
    *

@@ -11,8 +11,8 @@ import cookieParser from 'cookie-parser';
 import { SocketServer } from './socket';
 
 export class App {
-  private readonly app: Application;
-  private readonly server: http.Server;
+  public readonly app: Application;
+  readonly server: http.Server;
   private readonly errorHandler: ErrorHandler;
   private readonly socketServer: SocketServer;
 
@@ -34,7 +34,7 @@ export class App {
    * @param {void} - This function does not take any parameters
    * @return {void} - This function does not return any value
    */
-  private appConfig(): void {
+  public appConfig(): void {
     if ((process.env.NODE_ENV as string) !== 'production') {
       this.app.use(morgan('dev'));
     }
@@ -48,16 +48,16 @@ export class App {
    *  It attaches a route for the root URL that responds with a simple message,
    *  and also mounts two routers under the /api/messenger path.
    */
-  private routeMountings(): void {
+  public routeMountings(): void {
     this.app.get('/', (req: Request, res: Response) => {
-      res.send('THis is from backend server');
+      res.send('This is from backend server');
     });
 
     this.app.use('/api/messenger', new AuthRouter().getRouter());
     this.app.use('/api/messenger', new MessengerRouter().getRouter());
   }
 
-  private serveStaticFiles(): void {
+  public serveStaticFiles(): void {
     const staticFilesDir = path.join(__dirname, '../public');
     this.app.use(express.static(staticFilesDir));
   }
@@ -65,7 +65,7 @@ export class App {
   /**
    * A middleware function to handle errors.
    */
-  private errorMiddleware(): void {
+  public errorMiddleware(): void {
     this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
       return this.errorHandler.internalServerError(err, res, next);
     });

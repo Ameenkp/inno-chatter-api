@@ -50,7 +50,7 @@ export async function createUser(user: Partial<IUser>): Promise<IUser> {
   try {
     return await UserModel.create(user);
   } catch (error) {
-    throw new Error(`Error creating tour: ${(error as Error).message}`);
+    throw new Error(`Error creating user: ${(error as Error).message}`);
   }
 }
 
@@ -64,6 +64,6 @@ export async function findUserByEmail(email: String): Promise<IUser> {
   try {
     return await UserModel.findOne({ email: email }).select('+password');
   } catch (error) {
-    throw new Error(`Error creating tour: ${(error as Error).message}`);
+    throw new Error(`Email not Found: ${(error as Error).message}`);
   }
 }
