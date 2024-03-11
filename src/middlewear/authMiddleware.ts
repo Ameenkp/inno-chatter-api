@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { Constants } from '../config/constants';
+import { InnoChatterApiError } from '../error/innoChatterApiError';
 
 export class AuthMiddleware {
   /**
@@ -23,26 +24,10 @@ export class AuthMiddleware {
         req.myId = decodedToken.id;
         next();
       } catch (error) {
-        AuthMiddleware.handleVerificationError(res);
+        throw new InnoChatterApiError('Invalid Token', 401);
       }
     } else {
-      AuthMiddleware.handleNoAuthTokenError(res);
+      next(new InnoChatterApiError('Please Login First', 400));
     }
-  }
-
-  private static handleVerificationError(res: Response): void {
-    res.status(401).json({
-      error: {
-        errorMessage: ['Invalid Token'],
-      },
-    });
-  }
-
-  private static handleNoAuthTokenError(res: Response): void {
-    res.status(400).json({
-      error: {
-        errorMessage: ['Please Login First'],
-      },
-    });
   }
 }

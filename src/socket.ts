@@ -17,7 +17,7 @@ export class SocketServer {
     this.initializeSocketEvents();
   }
 
-  private addUser(userId: string, socketId: string, userInfo: UserInfo): void {
+  addUser(userId: string, socketId: string, userInfo: UserInfo): void {
     const checkUser = this.users.some((u) => u.userId === userId);
 
     if (!checkUser) {
@@ -25,11 +25,11 @@ export class SocketServer {
     }
   }
 
-  private userRemove(socketId: string): void {
+  userRemove(socketId: string): void {
     this.users = this.users.filter((u) => u.socketId !== socketId);
   }
 
-  private findFriend(id: string): User | undefined {
+  findFriend(id: string): User | undefined {
     return this.users.find((u) => u.userId === id);
   }
 

@@ -19,7 +19,7 @@ export class MessengerRouter {
     this.router.get('/get-friends', AuthMiddleware.authenticate, MessengerController.getFriends);
     this.router.post('/send-message', AuthMiddleware.authenticate, MessengerController.messageUploadDB);
     this.router.get('/get-message/:id', AuthMiddleware.authenticate, MessengerController.messageGet);
-    this.router.post('/image-message-send', AuthMiddleware.authenticate, MessengerController.ImageMessageSend);
+    this.router.post('/image-message-send', AuthMiddleware.authenticate, MessengerController.imageMessageSend);
     this.router.post('/seen-message', AuthMiddleware.authenticate, MessengerController.messageSeen);
     this.router.post('/delivered-message', AuthMiddleware.authenticate, MessengerController.deliveredMessage);
   }

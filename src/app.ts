@@ -9,6 +9,7 @@ import { MessengerRouter } from './routes/messengerRoutes';
 import { AuthRouter } from './routes/authRouter';
 import cookieParser from 'cookie-parser';
 import { SocketServer } from './socket';
+import { InnoChatterApiError } from './error/innoChatterApiError';
 
 export class App {
   public readonly app: Application;
@@ -67,6 +68,12 @@ export class App {
    */
   public errorMiddleware(): void {
     this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+      if (err instanceof InnoChatterApiError && err.status === 401) {
+        return this.errorHandler.handleVerificationError(err, res, next);
+      }
+      if (err instanceof InnoChatterApiError && err.status === 400) {
+        return this.errorHandler.handleNoAuthTokenError(err, res, next);
+      }
       return this.errorHandler.internalServerError(err, res, next);
     });
   }

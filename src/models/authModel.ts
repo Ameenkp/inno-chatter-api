@@ -39,7 +39,6 @@ const registerSchema = new Schema<IUser>(
 );
 export const UserModel = model<IUser>('user', registerSchema);
 
-
 /**
  * Creates a new user.
  *

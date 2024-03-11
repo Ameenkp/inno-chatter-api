@@ -103,14 +103,14 @@ export class MessengerController {
   }
 
   /**
-   * ImageMessageSend function sends an image message using the given request and response objects.
+   * sends an image message using the given request and response objects.
    *
    * @param {Request} req - the request object
    * @param {Response} res - the response object
    * @param {NextFunction} next - the next function
    * @return {void} void
    */
-  public static ImageMessageSend(req: Request, res: Response, next: NextFunction): void {
+  public static imageMessageSend(req: Request, res: Response, next: NextFunction): void {
     // @ts-ignore
     const senderId = req.myId;
     const form = formidable();

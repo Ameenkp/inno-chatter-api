@@ -2,14 +2,14 @@ import { createUser, findUserByEmail, UserModel } from '../../../src/models/auth
 
 describe('auth model tests ', () => {
   const mockUser: any = {
-    userName: 'JohnDoe',
+    userName: 'test_user_1',
     email: 'john.doe@example.com',
     password: 'StrongPassword123@',
     image: 'profile.jpg',
   };
 
   const user = new UserModel({
-    userName: 'JohnDoe',
+    userName: 'test_user_1',
     email: 'john.doe@example.com',
     password: 'StrongPassword123@',
     image: 'profile.jpg',
@@ -21,7 +21,7 @@ describe('auth model tests ', () => {
   });
 
   test('should be valid with correct input', async () => {
-    user.userName = 'JohnDoe';
+    user.userName = 'test_user_1';
     await expect(user.validate()).resolves.toBeUndefined();
   });
 
@@ -31,7 +31,7 @@ describe('auth model tests ', () => {
     expect(result).toEqual(mockUser);
   });
 
-  test('should throw an error if an error occurs', async () => {
+  test('should throw an error if an exception occurs', async () => {
     const mockError = new Error('Mocked error');
     UserModel.findOne = jest
       .fn()
