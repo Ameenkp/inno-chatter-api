@@ -1,6 +1,6 @@
 import { Error, model, Schema } from 'mongoose';
 import validator from 'validator';
-import path from "path";
+import path from 'path';
 
 export interface IUser extends Document {
   userName: string;

@@ -12,7 +12,8 @@ import { SocketServer } from './socket';
 import { InnoChatterApiError } from './error/innoChatterApiError';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerOptions from "../swaggerOptions";
+import swaggerOptions from '../swaggerOptions';
+import { Constants } from './config/constants';
 
 export class App {
   public readonly app: Application;
@@ -72,7 +73,13 @@ export class App {
    */
   public setupSwagger(): void {
     const specs = swaggerJSDoc(swaggerOptions);
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs , { explorer: true }));
+    this.app.use(
+      '/api-docs',
+      swaggerUi.serve,
+      swaggerUi.setup(specs, {
+        customCssUrl: Constants.CUSTOME_SWAGGER_CSS_URL,
+      })
+    );
   }
 
   /**

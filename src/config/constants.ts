@@ -9,6 +9,8 @@ export class Constants {
   public static readonly JWT_SECRET: string = String(process.env.JWT_SECRET);
   public static readonly JWT_EXPIRATION: string = String(process.env.JWT_EXPIRATION);
   public static readonly COOKIE_EXPIRATION: number = Number(process.env.COOKIE_EXPIRATION);
+  public static readonly CUSTOME_SWAGGER_CSS_URL: string =
+    'https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-monokai.css';
 
   // Add other constants as needed
 }

@@ -1,11 +1,8 @@
 import { Router } from 'express';
 import { AuthController } from '../controller/authController';
-import * as apiDocs from '../../api.docs';
 
 export class AuthRouter {
   private readonly router: Router;
-  // @ts-ignore
-  private readonly loginComment = apiDocs['/user-login'];
 
   constructor() {
     this.router = Router();
@@ -23,7 +20,7 @@ export class AuthRouter {
      *     summary: User login
      *     operationId: userLogin
      *     tags:
-     *       - Auth
+     *       - Authentication
      *     requestBody:
      *       required: true
      *       content:
@@ -46,7 +43,7 @@ export class AuthRouter {
      *     summary: User register
      *     operationId: userRegister
      *     tags:
-     *       - Auth
+     *       - Authentication
      *     requestBody:
      *       required: true
      *       content:
@@ -69,7 +66,7 @@ export class AuthRouter {
      *     summary: User logout
      *     operationId: userLogout
      *     tags:
-     *       - Auth
+     *       - Authentication
      *     responses:
      *       '200':
      *         description: User successfully logged out

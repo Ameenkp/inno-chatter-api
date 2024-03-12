@@ -2,6 +2,9 @@
 # Dependency directories
 node_modules/
 
+/public/image/*
+
+
 # TypeScript output directory
 dist/
 

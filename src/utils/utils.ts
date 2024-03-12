@@ -1,7 +1,7 @@
 import crypto from 'crypto';
-import path from "path";
-import {promisify} from "node:util";
-import fs from "fs";
+import path from 'path';
+import { promisify } from 'node:util';
+import fs from 'fs';
 
 export class Utils {
   static copyFileAsync = promisify(fs.copyFile);
@@ -20,18 +20,17 @@ export class Utils {
       return newImageName;
     } catch (error) {
       console.error('Error saving user image:', error);
-      throw new Error('Failed to save user image' , error as Error);
+      throw new Error('Failed to save user image', error as Error);
     }
   }
 
   public static async saveImage(image: any): Promise<void> {
     try {
-      const newPath = path.join(__dirname + '../../../public/image/', image[0].newFilename, '.jpeg');
+      const newPath = path.join(__dirname ,'../../../public/image/', image[0].newFilename, '.jpeg');
       await this.copyFileAsync(image[0].filepath, newPath);
     } catch (error) {
       console.error('Error saving user image:', error);
-      throw new Error('Failed to save chat image' , error as Error);
-
+      throw new Error('Failed to save chat image', error as Error);
     }
   }
 }

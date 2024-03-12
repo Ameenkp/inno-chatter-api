@@ -3,9 +3,9 @@ import formidable from 'formidable';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import {createUser, findUserByEmail} from '../models/authModel';
+import { createUser, findUserByEmail } from '../models/authModel';
 import { Constants } from '../config/constants';
-import {Utils} from "../utils/utils";
+import { Utils } from '../utils/utils';
 
 export class AuthController {
   /**
@@ -89,7 +89,7 @@ export class AuthController {
    * @param {string} email - the user's email
    * @param {string} password - the user's password
    * @param {string} confirmPassword - the user's confirmed password
-   * @param {any} files - any additional files
+   * @param {any} files - image file
    * @return {string[]} array of error messages
    */
   private static validateRegistrationData(

@@ -3,7 +3,7 @@ import { IUser, UserModel } from '../../../src/models/authModel';
 import { AuthController } from '../../../src/controller/authController';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import {Error} from "mongoose";
+import { Error } from 'mongoose';
 
 describe('authController tests', () => {
   let mockRequest: Partial<Request>;
@@ -30,7 +30,7 @@ describe('authController tests', () => {
         email: 'ilan_hi@gmail.com',
       },
       headers: {
-        "content-length": '123',
+        'content-length': '123',
       },
       cookies: {
         authToken: 'valid-token',
@@ -84,7 +84,7 @@ describe('authController tests', () => {
 
     await AuthController.userLogin(mockRequest as Request, mockResponse as Response, mockNext);
     expect(mockResponse.status).toHaveBeenCalledWith(201);
-    expect(mockResponse.cookie).toHaveBeenCalledWith('authToken', 'signed-token' ,  expect.any(Object));
+    expect(mockResponse.cookie).toHaveBeenCalledWith('authToken', 'signed-token', expect.any(Object));
     expect(mockResponse.json).toHaveBeenCalledWith({
       successMessage: 'Your Register Successful',
       token: 'signed-token',
@@ -108,19 +108,19 @@ describe('authController tests', () => {
     const mockError = new Error('Mocked error');
     try {
       UserModel.findOne = jest
-          .fn()
-          .mockImplementationOnce(() => ({ select: jest.fn().mockRejectedValueOnce(mockError) }));
+        .fn()
+        .mockImplementationOnce(() => ({ select: jest.fn().mockRejectedValueOnce(mockError) }));
       await AuthController.userLogin(mockRequest as Request, mockResponse as Response, mockNext);
       fail('Expected an error to be thrown');
     } catch (error) {
-      expect(mockNext).toHaveBeenCalled()
+      expect(mockNext).toHaveBeenCalled();
     }
   });
 
   test('should invalidate token upon logout', async () => {
     AuthController.userLogout(mockRequest as Request, mockResponse as Response);
     expect(mockResponse.status).toHaveBeenCalledWith(200);
-    expect(mockResponse.cookie).toHaveBeenCalledWith('authToken', "");
-    expect(mockResponse.json).toHaveBeenCalledWith({"success": true});
+    expect(mockResponse.cookie).toHaveBeenCalledWith('authToken', '');
+    expect(mockResponse.json).toHaveBeenCalledWith({ success: true });
   });
 });

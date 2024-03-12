@@ -91,7 +91,7 @@ dist
 .temp
 .cache
 
-
+/public/image/*
 
 
 .pnp.*

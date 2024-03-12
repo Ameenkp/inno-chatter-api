@@ -5,7 +5,7 @@ import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 import { promisify } from 'node:util';
-import {Utils} from "../utils/utils";
+import { Utils } from '../utils/utils';
 
 export class MessengerController {
   private static copyFileAsync = promisify(fs.copyFile);

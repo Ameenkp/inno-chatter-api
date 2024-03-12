@@ -2,7 +2,7 @@ import path from 'path';
 
 const swaggerOptions = {
     definition: {
-        openapi: '3.1.0',
+        openapi: '3.0.0',
         info: {
             title: 'InnoChatter API',
             version: '1.0.0',

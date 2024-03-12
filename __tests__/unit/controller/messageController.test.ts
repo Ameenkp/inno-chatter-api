@@ -10,7 +10,6 @@ describe('messageController tests', () => {
   let mockNext: NextFunction;
   let mockFormidableParse: jest.SpyInstance;
 
-
   beforeEach(() => {
     mockRequest = {
       // @ts-ignore
