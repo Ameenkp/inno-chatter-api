@@ -68,10 +68,23 @@ const swaggerOptions = {
                             type: 'string',
                         },
                     },
-                    required: ['senderId','reseverId'],
+                    required: ['senderId', 'reseverId'],
+                },
+                UserUpdate: { // New schema for user updates
+                    type: 'object',
+                    properties: {
+                        email: {
+                            type: 'string',
+                            format: 'email',
+                        },
+                        userName: {
+                            type: 'string',
+                        },
+                    },
+                    required: [],
                 },
             },
-            securitySchemes: { // Add this section
+            securitySchemes: {
                 cookieAuth: {
                     type: 'apiKey',
                     in: 'cookie',
@@ -80,7 +93,7 @@ const swaggerOptions = {
             },
         },
     },
-    apis: [path.join(__dirname, 'src/routes', '*.ts')], // Update the path based on your project structure
+    apis: [path.join(__dirname, 'src/routes', '*.ts')],
 };
 
 export default swaggerOptions;

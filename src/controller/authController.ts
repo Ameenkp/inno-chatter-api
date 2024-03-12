@@ -3,7 +3,7 @@ import formidable from 'formidable';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createUser, findUserByEmail } from '../models/authModel';
+import {createUser, findUserByEmail, IUser, UserModel} from '../models/authModel';
 import { Constants } from '../config/constants';
 import { Utils } from '../utils/utils';
 
@@ -70,6 +70,32 @@ export class AuthController {
       await AuthController.authenticateUser(email, password, res, next);
     }
   }
+
+  /**
+   * A function that updates a user.
+   *
+   * @param {Request} req - the request object
+   * @param {Response} res - the response object
+   * @param {NextFunction} next - the next function
+   * @return {Promise<void>} Promise that resolves to void
+   */
+  public static async userUpdate(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const { userId } = req.params;
+    const userDataToUpdate:Partial<IUser> = req.body;
+
+    try {
+      const updatedUser:IUser | null = await UserModel.findByIdAndUpdate(userId, userDataToUpdate, { new: true });
+      if (updatedUser) {
+        res.status(200).json({ success: true, user:{userName : updatedUser.userName , email: updatedUser.email} });
+      } else {
+        res.status(404).json({ error: { errorMessage: 'Update failed' } });
+      }
+    } catch (error) {
+      console.log('Failed to update user', error as Error);
+      next(error);
+    }
+  }
+
 
   /**
    * Logs out the user.

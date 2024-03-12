@@ -65,7 +65,7 @@ It includes unit tests, integration tests, API testing, and comprehensive API do
 ## Testing and Coverage Reports
 ### Unit Testing
 - The coverage report will be available in the console since the Jest configuration file is set up with Istanbul code coverage capabilities. 
-- Code coverage: ~73%
+- Code coverage: ~75%
 - Run tests:
   ```bash
   npm test

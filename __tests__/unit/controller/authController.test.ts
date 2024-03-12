@@ -13,7 +13,7 @@ describe('authController tests', () => {
 
   const user = new UserModel({
     userName: 'test_user_1',
-    email: 'john.doe@example.com',
+    email: 'test_user_1@example.com',
     password: 'StrongPassword123@',
     image: 'profile.jpg',
   });
@@ -115,6 +115,21 @@ describe('authController tests', () => {
     } catch (error) {
       expect(mockNext).toHaveBeenCalled();
     }
+  });
+  test('should update the user details', async () => {
+    mockRequest.body.email = 'newEmail@gmail.com';
+    UserModel.findOneAndUpdate = jest.fn().mockResolvedValueOnce(user) ;
+    await AuthController.userUpdate(mockRequest as Request, mockResponse as Response, mockNext);
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
+    expect(mockResponse.json).toHaveBeenCalledWith({ success: true, user:{ email: 'test_user_1@example.com' , userName: 'test_user_1'} });
+  });
+
+  test('should return 400 if the user not found for the provided id ', async () => {
+    mockRequest.body.email = '';
+    UserModel.findOneAndUpdate = jest.fn().mockResolvedValueOnce(null) ;
+    await AuthController.userUpdate(mockRequest as Request, mockResponse as Response, mockNext);
+    expect(mockResponse.status).toHaveBeenCalledWith(404);
+    expect(mockResponse.json).toHaveBeenCalledWith({ error:{errorMessage: "Update failed" }});
   });
 
   test('should invalidate token upon logout', async () => {
