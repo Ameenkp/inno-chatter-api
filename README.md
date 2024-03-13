@@ -139,7 +139,7 @@ The API endpoints are documented using Swagger/OpenAPI specification. You can fi
 
 Ensure that the application is running locally on port 8000 before accessing the Swagger UI.
 
-to quickly start testing you can use the published api docs (this is not actual just a simulation / you can use it for trying it out from postman)
+to quickly start testing you can use the published api docs (you can use it for trying it out from postman)
 [postman docs](https://documenter.getpostman.com/view/31106366/2sA2xjyWWF)
 
 
