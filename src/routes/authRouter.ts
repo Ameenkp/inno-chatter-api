@@ -60,7 +60,6 @@ export class AuthRouter {
 
     this.router.post('/user-register', AuthController.userRegister);
 
-
     /**
      * @swagger
      * /user/{userId}:
@@ -106,7 +105,6 @@ export class AuthRouter {
      */
 
     this.router.patch('/user/:userId', AuthMiddleware.authenticate, AuthController.userUpdate);
-
 
     /**
      * @swagger

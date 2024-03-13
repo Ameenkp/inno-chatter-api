@@ -16,7 +16,8 @@
     "lint": "eslint 'src/**/*.ts'",
     "format": "prettier --config .prettierrc --write 'src/**/*.ts' 'server.ts' '__tests__/**/*.ts'",
     "debug": "tsc --watch & nodemon --inspect-brk=9226 --ext js,html /dist/index.js",
-    "test": "jest"
+    "test": "jest",
+    "test:integration": "jest --config jest.integration.config.ts"
   },
   "keywords": [],
   "author": "ameenkp",
