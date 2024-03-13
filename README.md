@@ -115,7 +115,7 @@ docker run -d -p 8000:8000 --name inno-chatter-container  inno-chatter-api:1.0.0
       docker-compose up -f docker-compose-local.yml -p inno-chatter-cg-local -d --build
       ```
    #### This docker-compose command pulls the images from docker hub registry , you just need to have docker and docker hub in place 
-   #### NB: Please yous this method to see the demo without any hassle
+   #### NB: Please run this command to see the demo on the go
 
 4.
       ```bash
