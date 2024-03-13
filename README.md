@@ -54,6 +54,12 @@ It includes unit tests, integration tests, API testing, and comprehensive API do
    npm install --silent
    npm run start
    ```
+8. goto http://localhost:3001 in two tabs preferrably on different browsers , create user , and start messaging
+
+- ![Screenshot](./demo-screenshot.jpeg)
+
+  - added some extra functionalities like , message seen , message delivered , sound up on notifications etc are added
+
 ## Technology Choices and Versions
 - **Server-Side:** Node.js (v20.10.0), Express.js (v4.18.2), Typescript (v5.4.2)
 - **Authentication:** JWT (JSON Web Tokens)
@@ -138,7 +144,6 @@ to quickly start testing you can use the published api docs (this is not actual 
 
 
 ## Additional Information
-### Project Structure
 - **Project Structure:**
    - `src/controller`: Handles business logic.
    - `src/routes`: Defines API endpoints.
