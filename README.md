@@ -37,12 +37,12 @@ It includes unit tests, integration tests, API testing, and comprehensive API do
    ```bash
     npm run start
    ```
-    - make sure that your mongodb server is running or port 27017 
+    - make sure that your mongodb server is running on port 27017 
 5. **Start the application using nodemon:**
    ```bash
     npm run start-dev-server
    ```
-    - make sure that your mongodb server is running or port 27017
+    - make sure that your mongodb server is running on port 27017
 6. **Format code:**
    ```bash
     npm run format
