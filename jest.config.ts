@@ -16,7 +16,8 @@ const config: Config.InitialOptions = {
         }
     },
     coverageProvider:'babel',
-    moduleFileExtensions:["ts", "tsx", "js", "jsx", "json", "node"]
+    moduleFileExtensions:["ts", "tsx", "js", "jsx", "json", "node"],
+    testMatch: ["<rootDir>/__tests__/unit/**/*.test.ts"]
 };
 
 export default config;
