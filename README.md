@@ -142,6 +142,8 @@ Ensure that the application is running locally on port 8000 before accessing the
 to quickly start testing you can use the published api docs (you can use it for trying it out from postman)
 [postman docs](https://documenter.getpostman.com/view/31106366/2sA2xjyWWF)
 
+NB: Make sure to not expose token details /confidential details and business logic while publishing in an production environment , this is made only for proof of concept.
+
 
 ## Additional Information
 - **Project Structure:**
