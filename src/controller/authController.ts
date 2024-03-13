@@ -80,10 +80,13 @@ export class AuthController {
    * @return {Promise<void>} Promise that resolves to void
    */
   public static async userUpdate(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const { userId } = req.params;
-    const userDataToUpdate:Partial<IUser> = req.body;
 
     try {
+      const { userId } = req.params;
+      const userDataToUpdate:Partial<IUser> = req.body;
+      if (userDataToUpdate.password) {
+        throw new Error('Password cannot be updated at the moment');
+      }
       const updatedUser:IUser | null = await UserModel.findByIdAndUpdate(userId, userDataToUpdate, { new: true });
       if (updatedUser) {
         res.status(200).json({ success: true, user:{userName : updatedUser.userName , email: updatedUser.email} });

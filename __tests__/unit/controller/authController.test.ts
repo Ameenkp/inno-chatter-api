@@ -42,13 +42,6 @@ describe('authController tests', () => {
       cookie: jest.fn().mockReturnThis(),
     };
     mockNext = jest.fn();
-
-    const mockUser: Partial<IUser> = {
-      userName: 'nooh',
-      email: 'test_user@gmail.com',
-      password: '$2b$10$3bkEL/AI9sBLfdblvDKiY.ErJK/YlfISvuyV9xzS/Xdg691Ieao3u',
-      image: '62096background-123.jpeg',
-    };
   });
   test('should validate user password up on login', async () => {
     mockRequest.body.password = '';
@@ -118,6 +111,7 @@ describe('authController tests', () => {
   });
   test('should update the user details', async () => {
     mockRequest.body.email = 'newEmail@gmail.com';
+    mockRequest.body.password = null;
     UserModel.findOneAndUpdate = jest.fn().mockResolvedValueOnce(user) ;
     await AuthController.userUpdate(mockRequest as Request, mockResponse as Response, mockNext);
     expect(mockResponse.status).toHaveBeenCalledWith(200);
@@ -126,6 +120,7 @@ describe('authController tests', () => {
 
   test('should return 400 if the user not found for the provided id ', async () => {
     mockRequest.body.email = '';
+    mockRequest.body.password = null;
     UserModel.findOneAndUpdate = jest.fn().mockResolvedValueOnce(null) ;
     await AuthController.userUpdate(mockRequest as Request, mockResponse as Response, mockNext);
     expect(mockResponse.status).toHaveBeenCalledWith(404);
