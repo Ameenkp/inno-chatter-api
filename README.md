@@ -68,8 +68,15 @@ It includes unit tests, integration tests, API testing, and comprehensive API do
 - Code coverage: ~75%
 - Run tests:
   ```bash
-  npm test
+  npm run test
   ```
+### Integration Testing
+- Integration tests are created using jest and supertest
+- Run tests:
+```bash
+npm run test:integration
+```
+- make sure that your backend server is running on port 8000 or do ```npm run start```
 ## Docker and Docker Compose
 This project utilizes Docker for containerization and Docker Compose for orchestrating multi-container applications.
 
